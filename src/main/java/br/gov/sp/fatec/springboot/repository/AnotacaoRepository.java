@@ -3,8 +3,7 @@ package br.gov.sp.fatec.springboot.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.gov.sp.fatec.springboot.entity.Anotacao;
-import jakarta.websocket.Decoder.Text;
 
-public interface AnotacaoRepository extends JpaRepository<Anotacao, Text>{
+public interface AnotacaoRepository extends JpaRepository<Anotacao, Long>{
     
 }
