@@ -31,18 +31,15 @@ public class Usuario {
 
     @Column(name = "usr_senha")
     private String senha;
- 
+
     // nome do atributo que tem o join colomn na entidade Anotacao
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Set<Anotacao> anotacoes = new HashSet<Anotacao>();
 
     @ManyToMany
-    @JoinTable(
-        name = "uau_usuario_autorizacao",
-        joinColumns = {@JoinColumn(name = "usr_id")},
-        inverseJoinColumns = {@JoinColumn(name="aut_id")}
-    )
+    @JoinTable(name = "uau_usuario_autorizacao", joinColumns = { @JoinColumn(name = "usr_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "aut_id") })
     private Set<Autorizacao> autorizacoes = new HashSet<Autorizacao>();
 
     public Set<Autorizacao> getAutorizacoes() {
@@ -84,7 +81,5 @@ public class Usuario {
     public void setAnotacoes(Set<Anotacao> anotacoes) {
         this.anotacoes = anotacoes;
     }
-
-    
 
 }
