@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,13 +24,18 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepo;
 
     @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
     private AutorizacaoRepository autorizacaoRepo;
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Usuario> buscarTodosUsuarios() {
         List<Usuario> usuarios = usuarioRepo.findAll();
         return usuarios;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     public Usuario cadastraUsuario(Usuario usuario) {
         if (usuario == null ||
                 usuario.getNome() == null ||
@@ -45,10 +52,11 @@ public class UsuarioService {
             }
             usuario.setAutorizacoes(autorizacoes);
         }
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return usuarioRepo.save(usuario);
 
     }
-
+    @PreAuthorize("isAuthenticad()")
     public Usuario buscarUsuarioPorId(Long id) {
         Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
 
